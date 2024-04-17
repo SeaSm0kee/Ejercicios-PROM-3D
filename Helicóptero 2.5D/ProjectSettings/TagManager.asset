@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Helicopter
   - Skyscrapers
+  - Coin
+  - Diamond
+  - Dead
   layers:
   - Default
   - TransparentFX
