@@ -41,5 +41,13 @@ public class MovementHelicopter : MonoBehaviour
     void Move()
     {
         rb.velocity = direction * speed;
-    } 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Skyscrapers"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

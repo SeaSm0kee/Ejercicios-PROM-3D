@@ -156,6 +156,7 @@ GameObject:
   - component: {fileID: 2173742928268959909}
   - component: {fileID: 4626943836596164113}
   - component: {fileID: 6116967482303627189}
+  - component: {fileID: 7310461901415194736}
   m_Layer: 0
   m_Name: Blades
   m_TagString: Untagged
@@ -228,6 +229,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7310461901415194736
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4680379067960527900}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10.182288, y: 10.233842, z: 0.13746502}
+  m_Center: {x: -0.010127068, y: -0.00000023841858, z: -0.0000016689302}
 --- !u!1 &7832360033967455661
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +261,7 @@ GameObject:
   - component: {fileID: 4836029199694865966}
   - component: {fileID: 3925611913173738891}
   - component: {fileID: 5891410087965600130}
+  - component: {fileID: 3206024228532524212}
   m_Layer: 0
   m_Name: Helicopter Body
   m_TagString: Untagged
@@ -312,3 +335,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3206024228532524212
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7832360033967455661}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0000005, y: 7.3324385, z: 3.3032289}
+  m_Center: {x: 0.00000017881393, y: 1.8377855, z: 0.6516138}
