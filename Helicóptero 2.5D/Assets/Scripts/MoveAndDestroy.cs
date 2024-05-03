@@ -20,7 +20,6 @@ public class MoveAndDestroy : MonoBehaviour
 
     void Start()
     {
-        //rb.velocity = new Vector2(-speed, 0);
     }
 
     // Update is called once per frame
@@ -41,10 +40,7 @@ public class MoveAndDestroy : MonoBehaviour
         if (gameObject.CompareTag("Coin") || gameObject.CompareTag("Diamond"))
         {
             if (other.gameObject.CompareTag("Helicopter"))
-            {
                 StartCoroutine(CorDestroyCoin());
-            }
-
         }
 
     }

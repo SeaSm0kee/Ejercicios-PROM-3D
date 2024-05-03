@@ -7,6 +7,14 @@ public class Spawner : MonoBehaviour
     [SerializeField] private List<GameObject> skyscrapersPrefabs;
     private List<GameObject> skyscrapers;
     private GameObject skyscraper;
+    [SerializeField] private float maxY_Skyscraper;
+    [SerializeField] private float minY_Skyscraper;
+
+    [SerializeField] private bool firstSkyscraper;
+    [SerializeField] private float posicionInicio;
+    [SerializeField] private float diferencia;
+    private float skyscraperInList;
+
 
     private void Awake()
     {
