@@ -10,9 +10,14 @@ public class MoveAndDestroy : MonoBehaviour
     private Rigidbody rb;
     [SerializeField] private float speed;
     [SerializeField] private float endMap;
+    private GameManager gm;
+
+    //public delegate void DelegateMoveAndDestroy();
+    //public event DelegateMoveAndDestroy 
 
     private void Awake()
     {
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         rb = GetComponent<Rigidbody>();
         if (gameObject.CompareTag("Coin") || gameObject.CompareTag("Diamond"))
             particle = GetComponent<ParticleSystem>();
@@ -26,7 +31,7 @@ public class MoveAndDestroy : MonoBehaviour
     void Update()
     {
         if (transform.position.x <= endMap)
-            Destroy(gameObject);
+            DestruirObjeto();
 
     }
 
@@ -52,6 +57,12 @@ public class MoveAndDestroy : MonoBehaviour
         particle.Play();
         yield return new WaitForSeconds(timeToDestroy);
         Destroy(gameObject);
+    }
 
+    void DestruirObjeto()
+    {
+        if (gameObject.CompareTag("Skyscrapers"))
+            gm.DestruirSkyscraper(gameObject);
+        Destroy(gameObject);
     }
 }
