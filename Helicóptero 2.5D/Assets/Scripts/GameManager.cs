@@ -6,21 +6,34 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public event Action<GameObject> SkyscraperDestroyed;
-    public delegate void DelegateMoveAndDestroy();
+    public event Action StartSpawnAirplane;
+    //public delegate void DelegateMoveAndDestroy();
     //public event DelegateMoveAndDestroy d;
+
     void Start()
     {
-        
+        //StartCoroutine(Coroutine());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void DestruirSkyscraper(GameObject go)
     {
         SkyscraperDestroyed?.Invoke(go);
+    }
+
+    IEnumerator Coroutine()
+    {
+        yield return new WaitForSeconds(5);
+        StartSpawnAirplane?.Invoke();
+    }
+
+    public void AirplaneDestroyed()
+    {
+
     }
 }

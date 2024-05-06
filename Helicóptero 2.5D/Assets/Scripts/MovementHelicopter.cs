@@ -16,13 +16,13 @@ public class MovementHelicopter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void FixedUpdate()
@@ -45,7 +45,7 @@ public class MovementHelicopter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Skyscrapers"))
+        if (other.gameObject.CompareTag("Skyscrapers") || other.gameObject.CompareTag("Airplane"))
         {
             Destroy(gameObject);
         }

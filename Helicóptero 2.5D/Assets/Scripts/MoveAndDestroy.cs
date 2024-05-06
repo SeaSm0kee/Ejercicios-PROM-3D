@@ -47,6 +47,9 @@ public class MoveAndDestroy : MonoBehaviour
             if (other.gameObject.CompareTag("Helicopter"))
                 StartCoroutine(CorDestroyCoin());
         }
+        else if (gameObject.CompareTag("Airplane"))
+            if (other.gameObject.CompareTag("Helicopter"))
+                Destroy(gameObject);
 
     }
 
@@ -63,6 +66,8 @@ public class MoveAndDestroy : MonoBehaviour
     {
         if (gameObject.CompareTag("Skyscrapers"))
             gm.DestruirSkyscraper(gameObject);
+        else if (gameObject.CompareTag("Airplane"))
+            gm.AirplaneDestroyed();
         Destroy(gameObject);
     }
 }

@@ -18,9 +18,13 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] private GameObject coinPrefab;
     private GameObject coin;
-    [Range(0,1)]
+    [Range(0, 1)]
     [SerializeField] private float chance;
     private GameManager gm;
+
+    [SerializeField] private GameObject airplanePrefab;
+    private GameObject airplane;
+    private bool firstAirplane;
 
 
     private void Awake()
@@ -28,7 +32,9 @@ public class Spawner : MonoBehaviour
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         skyscrapersList = new List<GameObject>();
         firstSkyscraper = true;
-        gm.SkyscraperDestroyed += Destruir;
+        gm.SkyscraperDestroyed += DestroySkyscraper;
+        //gm.StartSpawnAirplane += SpawnAirplane;
+        firstAirplane = true;
     }
 
     void Start()
@@ -53,7 +59,7 @@ public class Spawner : MonoBehaviour
                 firstSkyscraper = false;
             }
             else
-                skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(),35);
+                skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(), 35);
 
             skyscrapersList.Add(skyscraper);
         }
@@ -67,7 +73,7 @@ public class Spawner : MonoBehaviour
         SpawnCoin();
     }
 
-    void Destruir(GameObject go)
+    void DestroySkyscraper(GameObject go)
     {
         skyscrapersList.Remove(go);
         SpawnSkyscraper();
@@ -75,17 +81,31 @@ public class Spawner : MonoBehaviour
 
     void SpawnCoin()
     {
-        if(Random.value < chance)
+        if (Random.value < chance)
         {
             coin = Instantiate(coinPrefab);
-            coin.transform.position = new Vector3(skyscraper.transform.position.x, skyscraper.transform.position.y + 18, skyscraper.transform.position.z);
+            coin.transform.position = new Vector3(skyscraper.transform.position.x, skyscraper.transform.position.y + 19, skyscraper.transform.position.z);
         }
+    }
+
+    void SpawnAirplane()
+    {
+        //if (firstAirplane)
+        StartCoroutine(CorAirplane());
+    }
+
+    IEnumerator CorAirplane()
+    {
+        yield return new WaitForSeconds(Random.Range(0, 6));
+        airplane = Instantiate(airplanePrefab);
+        airplane.transform.position = new Vector3(posicionInicio, 32.3f, 35);
+        firstAirplane = false;
     }
 
     float RandomHeight() => Random.Range(minY_Skyscraper, maxY_Skyscraper);
 
     private void OnDisable()
     {
-        gm.SkyscraperDestroyed -= Destruir;
+        gm.SkyscraperDestroyed -= DestroySkyscraper;
     }
 }
