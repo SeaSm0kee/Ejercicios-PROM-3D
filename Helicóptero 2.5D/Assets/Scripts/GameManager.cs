@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public event Action<GameObject> SkyscraperDestroyed;
     public delegate void DelegateMoveAndDestroy();
-    public event DelegateMoveAndDestroy d;
+    //public event DelegateMoveAndDestroy d;
     void Start()
     {
         

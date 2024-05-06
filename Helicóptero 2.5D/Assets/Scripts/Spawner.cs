@@ -14,7 +14,12 @@ public class Spawner : MonoBehaviour
     private bool firstSkyscraper;
     [SerializeField] private float posicionInicio;
     [SerializeField] private float diferencia;
-    private float skyscraperInList;
+    [SerializeField] private float skyscraperInList;
+
+    [SerializeField] private GameObject coinPrefab;
+    private GameObject coin;
+    [Range(0,1)]
+    [SerializeField] private float chance;
     private GameManager gm;
 
 
@@ -39,7 +44,7 @@ public class Spawner : MonoBehaviour
 
     void SpawnSkyscrapersList()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < skyscraperInList; i++)
         {
             skyscraper = Instantiate(skyscrapersPrefabs[Random.Range(0, 3)]);
             if (firstSkyscraper)
@@ -59,23 +64,28 @@ public class Spawner : MonoBehaviour
         skyscraper = Instantiate(skyscrapersPrefabs[Random.Range(0, 3)]);
         skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(), 35);
         skyscrapersList.Add(skyscraper);
+        SpawnCoin();
     }
 
     void Destruir(GameObject go)
     {
         skyscrapersList.Remove(go);
         SpawnSkyscraper();
-        /*for (int i = 0; i < skyscrapersList.Count; i++)
-        {
-            if (skyscrapersList[i] == go)
-                skyscrapersList.Remove(go);
-        }*/
     }
+
+    void SpawnCoin()
+    {
+        if(Random.value < chance)
+        {
+            coin = Instantiate(coinPrefab);
+            coin.transform.position = new Vector3(skyscraper.transform.position.x, skyscraper.transform.position.y + 18, skyscraper.transform.position.z);
+        }
+    }
+
+    float RandomHeight() => Random.Range(minY_Skyscraper, maxY_Skyscraper);
 
     private void OnDisable()
     {
         gm.SkyscraperDestroyed -= Destruir;
     }
-
-    float RandomHeight() => Random.Range(minY_Skyscraper, maxY_Skyscraper);
 }

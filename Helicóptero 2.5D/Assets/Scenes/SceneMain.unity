@@ -744,7 +744,11 @@ MonoBehaviour:
   maxY_Skyscraper: 9.5
   minY_Skyscraper: -1.5
   posicionInicio: 30
-  diferencia: 16
+  diferencia: 25
+  skyscraperInList: 4
+  coinPrefab: {fileID: 872115531362845477, guid: 38d26d6ed87867f27a2b868b2e629322,
+    type: 3}
+  chance: 0.8
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,28 +1351,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1af5de0c099acb525b578abf28854587, type: 3}
---- !u!1 &6886517289359076040 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 872115531362845477, guid: 38d26d6ed87867f27a2b868b2e629322,
-    type: 3}
-  m_PrefabInstance: {fileID: 8527577618264106340}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6886517289361339406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6886517289359076040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d5a2db01043aa5e4bf8e12001579fc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particle: {fileID: 0}
-  timeToDestroy: 2
-  speed: 5
-  endMap: -30
 --- !u!1001 &8527577618264106340
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1437,19 +1419,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8162051058576301964, guid: 38d26d6ed87867f27a2b868b2e629322,
-        type: 3}
-      propertyPath: m_IsKinematic
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 872115531362845477, guid: 38d26d6ed87867f27a2b868b2e629322,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6886517289361339406}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38d26d6ed87867f27a2b868b2e629322, type: 3}
 --- !u!1001 &8922107402755966403
 PrefabInstance:
