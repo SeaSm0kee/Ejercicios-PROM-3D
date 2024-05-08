@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        //StartCoroutine(Coroutine());
+        StartCoroutine(Coroutine());
     }
 
     // Update is called once per frame
@@ -28,12 +28,12 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Coroutine()
     {
-        yield return new WaitForSeconds(5);
-        StartSpawnAirplane?.Invoke();
+        yield return new WaitForSeconds(15);
+        AirplaneDestroyed();
     }
 
     public void AirplaneDestroyed()
     {
-
+        StartSpawnAirplane?.Invoke();
     }
 }

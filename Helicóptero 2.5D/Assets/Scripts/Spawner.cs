@@ -18,8 +18,12 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] private GameObject coinPrefab;
     private GameObject coin;
+    [SerializeField] private GameObject diamondPrefab;
+    private GameObject diamond;
     [Range(0, 1)]
-    [SerializeField] private float chance;
+    [SerializeField] private float chanceCoin;
+    [Range(0,1)]
+    [SerializeField] private float chanceDiamond;
     private GameManager gm;
 
     [SerializeField] private GameObject airplanePrefab;
@@ -33,7 +37,7 @@ public class Spawner : MonoBehaviour
         skyscrapersList = new List<GameObject>();
         firstSkyscraper = true;
         gm.SkyscraperDestroyed += DestroySkyscraper;
-        //gm.StartSpawnAirplane += SpawnAirplane;
+        gm.StartSpawnAirplane += SpawnAirplane;
         firstAirplane = true;
     }
 
@@ -70,7 +74,7 @@ public class Spawner : MonoBehaviour
         skyscraper = Instantiate(skyscrapersPrefabs[Random.Range(0, 3)]);
         skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(), 35);
         skyscrapersList.Add(skyscraper);
-        SpawnCoin();
+        SpawnCoinOrDiamond();
     }
 
     void DestroySkyscraper(GameObject go)
@@ -79,27 +83,42 @@ public class Spawner : MonoBehaviour
         SpawnSkyscraper();
     }
 
-    void SpawnCoin()
+    void SpawnCoinOrDiamond()
     {
-        if (Random.value < chance)
+        Vector3 vectorSkyscraper = skyscraper.transform.position;
+        if (Random.value < chanceDiamond)
         {
-            coin = Instantiate(coinPrefab);
-            coin.transform.position = new Vector3(skyscraper.transform.position.x, skyscraper.transform.position.y + 19, skyscraper.transform.position.z);
-        }
+            Instantiate(diamondPrefab).transform.position = new Vector3(vectorSkyscraper.x, vectorSkyscraper.y + 19, vectorSkyscraper.z);
+            //coin = Instantiate(coinPrefab);
+            //coin.transform.position = new Vector3(skyscraper.transform.position.x, skyscraper.transform.position.y + 19, skyscraper.transform.position.z);
+        }else if(Random.value < chanceCoin)
+            Instantiate(coinPrefab).transform.position = new Vector3(vectorSkyscraper.x, vectorSkyscraper.y + 19, vectorSkyscraper.z);
+        
     }
 
     void SpawnAirplane()
     {
-        //if (firstAirplane)
-        StartCoroutine(CorAirplane());
+        if (firstAirplane)
+        {
+            InstantiateAirplane();
+            firstAirplane = false;
+        }
+        else
+            StartCoroutine(CorAirplane());
+        
+            
     }
 
     IEnumerator CorAirplane()
     {
         yield return new WaitForSeconds(Random.Range(0, 6));
+        InstantiateAirplane();
+    }
+
+    void InstantiateAirplane()
+    {
         airplane = Instantiate(airplanePrefab);
-        airplane.transform.position = new Vector3(posicionInicio, 32.3f, 35);
-        firstAirplane = false;
+        airplane.transform.position = new Vector3(posicionInicio, 32f, 35);
     }
 
     float RandomHeight() => Random.Range(minY_Skyscraper, maxY_Skyscraper);
@@ -107,5 +126,6 @@ public class Spawner : MonoBehaviour
     private void OnDisable()
     {
         gm.SkyscraperDestroyed -= DestroySkyscraper;
+        gm.StartSpawnAirplane -= SpawnAirplane;
     }
 }
