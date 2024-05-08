@@ -24,11 +24,11 @@ public class Selected : MonoBehaviour
         {
             Deselect();
             SelectedObject(hit.transform);
-            if (hit.collider.CompareTag("Cubo"))
+            if (hit.collider.CompareTag("Arrow"))
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    Debug.Log("Cubo");
+                    Debug.Log("Arrow");
                 }
             }
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * distancia, Color.red);
@@ -41,21 +41,21 @@ public class Selected : MonoBehaviour
 
     void SelectedObject(Transform transform)
     {
-        transform.GetComponent<MeshRenderer>().material.color = Color.green;
+        //transform.GetComponent<MeshRenderer>().material.color = Color.green;
         ultimoReconocido = transform.gameObject;
     }
     void Deselect()
     {
         if (ultimoReconocido)
         {
-            ultimoReconocido.GetComponent<MeshRenderer>().material.color = Color.white;
+            //ultimoReconocido.GetComponent<MeshRenderer>().material.color = Color.white;
             ultimoReconocido = null;
         }
     }
 
     private void OnGUI()
     {
-        Rect rect = new Rect(Screen.width / 2, Screen.height / 2, puntero.width, puntero.height);
+        Rect rect = new Rect(Screen.width / 2, Screen.height / 2, puntero.width / 6, puntero.height / 6);
         GUI.DrawTexture(rect, puntero);
 
         if (ultimoReconocido)
