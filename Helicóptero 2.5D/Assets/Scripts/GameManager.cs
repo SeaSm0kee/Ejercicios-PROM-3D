@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public event Action<GameObject> SkyscraperDestroyed;
     public event Action StartSpawnAirplane;
-    //public delegate void DelegateMoveAndDestroy();
-    //public event DelegateMoveAndDestroy d;
+    private int coins;
+    [SerializeField] TextMeshProUGUI textCoins;
 
     void Start()
     {
@@ -35,5 +36,11 @@ public class GameManager : MonoBehaviour
     public void AirplaneDestroyed()
     {
         StartSpawnAirplane?.Invoke();
+    }
+
+    public void SumarCoin(int n)
+    {
+        coins += n;
+        textCoins.text = coins.ToString();
     }
 }

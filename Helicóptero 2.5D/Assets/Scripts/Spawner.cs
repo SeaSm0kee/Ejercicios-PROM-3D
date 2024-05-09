@@ -17,9 +17,9 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float skyscraperInList;
 
     [SerializeField] private GameObject coinPrefab;
-    private GameObject coin;
+    //private GameObject coin;
     [SerializeField] private GameObject diamondPrefab;
-    private GameObject diamond;
+    //private GameObject diamond;
     [Range(0, 1)]
     [SerializeField] private float chanceCoin;
     [Range(0,1)]
@@ -29,6 +29,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject airplanePrefab;
     private GameObject airplane;
     private bool firstAirplane;
+    private readonly float positionZ = 35f;
 
 
     private void Awake()
@@ -63,7 +64,7 @@ public class Spawner : MonoBehaviour
                 firstSkyscraper = false;
             }
             else
-                skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(), 35);
+                skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(), positionZ);
 
             skyscrapersList.Add(skyscraper);
         }
@@ -72,7 +73,7 @@ public class Spawner : MonoBehaviour
     void SpawnSkyscraper()
     {
         skyscraper = Instantiate(skyscrapersPrefabs[Random.Range(0, 3)]);
-        skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(), 35);
+        skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(), positionZ);
         skyscrapersList.Add(skyscraper);
         SpawnCoinOrDiamond();
     }
@@ -88,11 +89,11 @@ public class Spawner : MonoBehaviour
         Vector3 vectorSkyscraper = skyscraper.transform.position;
         if (Random.value < chanceDiamond)
         {
-            Instantiate(diamondPrefab).transform.position = new Vector3(vectorSkyscraper.x, vectorSkyscraper.y + 19, vectorSkyscraper.z);
+            Instantiate(diamondPrefab).transform.position = new Vector3(vectorSkyscraper.x, vectorSkyscraper.y + 19, positionZ);
             //coin = Instantiate(coinPrefab);
             //coin.transform.position = new Vector3(skyscraper.transform.position.x, skyscraper.transform.position.y + 19, skyscraper.transform.position.z);
         }else if(Random.value < chanceCoin)
-            Instantiate(coinPrefab).transform.position = new Vector3(vectorSkyscraper.x, vectorSkyscraper.y + 19, vectorSkyscraper.z);
+            Instantiate(coinPrefab).transform.position = new Vector3(vectorSkyscraper.x, vectorSkyscraper.y + 19, positionZ);
         
     }
 
@@ -111,14 +112,14 @@ public class Spawner : MonoBehaviour
 
     IEnumerator CorAirplane()
     {
-        yield return new WaitForSeconds(Random.Range(0, 6));
+        yield return new WaitForSeconds(Random.Range(3, 10));
         InstantiateAirplane();
     }
 
     void InstantiateAirplane()
     {
         airplane = Instantiate(airplanePrefab);
-        airplane.transform.position = new Vector3(posicionInicio, 32f, 35);
+        airplane.transform.position = new Vector3(posicionInicio, 32f, positionZ);
     }
 
     float RandomHeight() => Random.Range(minY_Skyscraper, maxY_Skyscraper);
