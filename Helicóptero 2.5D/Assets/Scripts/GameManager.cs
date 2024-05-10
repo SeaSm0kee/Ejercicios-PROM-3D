@@ -10,10 +10,13 @@ public class GameManager : MonoBehaviour
     public event Action StartSpawnAirplane;
     private int coins;
     [SerializeField] TextMeshProUGUI textCoins;
+    [SerializeField] private GameObject uiDead;
+    public event Action StartPlay;
+    [SerializeField] private GameObject uiCanvas;
 
     void Start()
     {
-        StartCoroutine(Coroutine());
+        uiDead.SetActive(false);
     }
 
     // Update is called once per frame
@@ -42,5 +45,24 @@ public class GameManager : MonoBehaviour
     {
         coins += n;
         textCoins.text = coins.ToString();
+    }
+    public void StarGame()
+    {
+        StartCoroutine(Coroutine());
+        uiCanvas.SetActive(false);
+        StartPlay?.Invoke();
+    }
+
+    public void ExitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        Application.Quit();
+    }
+
+    public void HelicopterDead()
+    {
+
     }
 }

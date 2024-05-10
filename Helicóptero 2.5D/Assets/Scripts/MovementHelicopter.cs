@@ -8,10 +8,22 @@ public class MovementHelicopter : MonoBehaviour
     private Vector3 direction;
     private Rigidbody rb;
     [SerializeField] private float speed;
+    [SerializeField] private GameObject vfx;
+    [SerializeField] private GameObject blades;
+    [SerializeField] private GameObject body;
+    private bool canMove;
+    private GameManager gm;
 
     private void Awake()
     {
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         rb = GetComponent<Rigidbody>();
+        vfx = transform.GetChild(2).gameObject;
+        vfx.SetActive(false);
+        blades = transform.GetChild(0).gameObject;
+        body = transform.GetChild(1).gameObject;
+        canMove = false;
+        gm.StartPlay += SetCanMove;
     }
     // Start is called before the first frame update
     void Start()
@@ -27,7 +39,8 @@ public class MovementHelicopter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        if(canMove)
+            Move();
     }
 
 
@@ -35,7 +48,6 @@ public class MovementHelicopter : MonoBehaviour
     {
         direction = context.ReadValue<Vector2>();
         if (direction != Vector3.zero) direction.Normalize();
-        //direction.Normalize();
     }
 
     void Move()
@@ -47,7 +59,29 @@ public class MovementHelicopter : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Skyscrapers") || other.gameObject.CompareTag("Airplane"))
         {
-            Destroy(gameObject);
+            StartCoroutine(PruebaExplosion());
         }
+    }
+
+    IEnumerator PruebaExplosion()
+    {
+        canMove = false;
+        rb.velocity = Vector3.zero;
+        blades.SetActive(false);
+        body.SetActive(false);
+        vfx.SetActive(true);
+        yield return new WaitForSeconds(3);
+        Destroy(gameObject);
+        gm.HelicopterDead();
+    }
+
+    void SetCanMove()
+    {
+        canMove = true;
+    }
+
+    private void OnDestroy()
+    {
+        gm.StartPlay -= SetCanMove;
     }
 }

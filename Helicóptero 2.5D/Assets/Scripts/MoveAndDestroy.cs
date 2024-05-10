@@ -12,6 +12,9 @@ public class MoveAndDestroy : MonoBehaviour
     [SerializeField] private float endMap;
     private GameManager gm;
     private MeshRenderer meshRenderer;
+    private bool stopMove;
+    private GameObject vfx;
+    
 
     //public delegate void DelegateMoveAndDestroy();
     //public event DelegateMoveAndDestroy 
@@ -23,6 +26,10 @@ public class MoveAndDestroy : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         if (gameObject.CompareTag("Coin") || gameObject.CompareTag("Diamond"))
             particle = GetComponent<ParticleSystem>();
+        stopMove = false;
+        gm.StartPlay += ChangeStopMove;
+        //falta poner un if aqui para buscar el objeto
+
     }
 
     void Start()
@@ -39,7 +46,8 @@ public class MoveAndDestroy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(-speed, rb.velocity.y);
+        if(stopMove)
+            rb.velocity = new Vector2(-speed, rb.velocity.y);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -71,5 +79,11 @@ public class MoveAndDestroy : MonoBehaviour
         else if (gameObject.CompareTag("Airplane"))
             gm.AirplaneDestroyed();
         Destroy(gameObject);
+    }
+    void ChangeStopMove() => stopMove = true;
+
+    private void OnDestroy()
+    {
+        gm.StartPlay -= ChangeStopMove;
     }
 }
