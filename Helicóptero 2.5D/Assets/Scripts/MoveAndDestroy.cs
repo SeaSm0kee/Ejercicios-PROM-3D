@@ -13,7 +13,7 @@ public class MoveAndDestroy : MonoBehaviour
     private GameManager gm;
     private MeshRenderer meshRenderer;
     private bool stopMove;
-    private GameObject vfx;
+    [SerializeField] private GameObject vfx;
     
 
     //public delegate void DelegateMoveAndDestroy();
@@ -26,8 +26,17 @@ public class MoveAndDestroy : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         if (gameObject.CompareTag("Coin") || gameObject.CompareTag("Diamond"))
             particle = GetComponent<ParticleSystem>();
-        stopMove = false;
+        if (gm.GetIsPlaying())
+            stopMove = true;
+        else
+            stopMove = false;
         gm.StartPlay += ChangeStopMove;
+        if (gameObject.CompareTag("Airplane"))
+        {
+            vfx = transform.GetChild(0).gameObject;
+            vfx.SetActive(false);
+        }
+            
         //falta poner un if aqui para buscar el objeto
 
     }
@@ -55,11 +64,11 @@ public class MoveAndDestroy : MonoBehaviour
         if (gameObject.CompareTag("Coin") || gameObject.CompareTag("Diamond"))
         {
             if (other.gameObject.CompareTag("Helicopter"))
-                StartCoroutine(CorDestroyCoin());
+                PruebaCoin();
         }
         else if (gameObject.CompareTag("Airplane"))
             if (other.gameObject.CompareTag("Helicopter"))
-                Destroy(gameObject);
+                DestroyAirplane();
     }
 
 
@@ -72,6 +81,14 @@ public class MoveAndDestroy : MonoBehaviour
         Destroy(gameObject);
     }
 
+    void PruebaCoin()
+    {
+        gm.SumarCoin(gameObject.CompareTag("Coin") ? 1 : 10);
+        meshRenderer.enabled = false;
+        particle.Play();
+        Destroy(gameObject, timeToDestroy);
+    }
+
     void DestruirObjeto()
     {
         if (gameObject.CompareTag("Skyscrapers"))
@@ -79,6 +96,14 @@ public class MoveAndDestroy : MonoBehaviour
         else if (gameObject.CompareTag("Airplane"))
             gm.AirplaneDestroyed();
         Destroy(gameObject);
+    }
+
+    void DestroyAirplane()
+    {
+        meshRenderer.enabled = false;
+        vfx.SetActive(true);
+        gm.AirplaneDestroyed();
+        Destroy(gameObject, 3f);
     }
     void ChangeStopMove() => stopMove = true;
 

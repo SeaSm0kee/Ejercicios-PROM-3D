@@ -837,7 +837,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &694914725
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1232,6 +1232,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3564517286056353109, guid: 7b6419cac8ef92a4c9258f01e3bcdc36,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2247,8 +2252,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textCoins: {fileID: 1785660771}
-  uiDead: {fileID: 0}
-  uiCanvas: {fileID: 0}
+  uiDead: {fileID: 694914724}
+  uiStartGame: {fileID: 1485900916}
+  uiCoins: {fileID: 2083133064}
 --- !u!1 &1887209794
 GameObject:
   m_ObjectHideFlags: 0
@@ -3245,10 +3251,6 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 2207998256320651739}
   - {fileID: 850827071}
-  - {fileID: 876197023689298738}
-  - {fileID: 2389627603087713156}
-  - {fileID: 8922107402755966403}
-  - {fileID: 8527577618264106340}
   - {fileID: 1543073499}
   - {fileID: 457447510}
   - {fileID: 1816237409}
@@ -3257,3 +3259,7 @@ SceneRoots:
   - {fileID: 228863012206960359}
   - {fileID: 928937889}
   - {fileID: 466697175260612867}
+  - {fileID: 876197023689298738}
+  - {fileID: 2389627603087713156}
+  - {fileID: 8922107402755966403}
+  - {fileID: 8527577618264106340}

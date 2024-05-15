@@ -12,11 +12,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI textCoins;
     [SerializeField] private GameObject uiDead;
     public event Action StartPlay;
-    [SerializeField] private GameObject uiCanvas;
+    [SerializeField] private GameObject uiStartGame;
+    [SerializeField] private GameObject uiCoins;
+    private bool isPlaying;
 
     void Start()
     {
         uiDead.SetActive(false);
+        uiCoins.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,8 +52,10 @@ public class GameManager : MonoBehaviour
     public void StarGame()
     {
         StartCoroutine(Coroutine());
-        uiCanvas.SetActive(false);
+        uiStartGame.SetActive(false);
+        uiCoins.SetActive(true);
         StartPlay?.Invoke();
+        isPlaying = true;
     }
 
     public void ExitGame()
@@ -65,4 +70,6 @@ public class GameManager : MonoBehaviour
     {
 
     }
+
+    public bool GetIsPlaying() => isPlaying;
 }
