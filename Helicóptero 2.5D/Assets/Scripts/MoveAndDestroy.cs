@@ -36,9 +36,6 @@ public class MoveAndDestroy : MonoBehaviour
             vfx = transform.GetChild(0).gameObject;
             vfx.SetActive(false);
         }
-            
-        //falta poner un if aqui para buscar el objeto
-
     }
 
     void Start()
@@ -56,7 +53,7 @@ public class MoveAndDestroy : MonoBehaviour
     private void FixedUpdate()
     {
         if(stopMove)
-            rb.velocity = new Vector2(-speed, rb.velocity.y);
+            rb.velocity = new Vector2(speed*-1, rb.velocity.y);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -81,7 +78,7 @@ public class MoveAndDestroy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void PruebaCoin()
+    void PruebaCoin() //Cambiar nombre
     {
         gm.SumarCoin(gameObject.CompareTag("Coin") ? 1 : 10);
         meshRenderer.enabled = false;
@@ -105,7 +102,7 @@ public class MoveAndDestroy : MonoBehaviour
         gm.AirplaneDestroyed();
         Destroy(gameObject, 3f);
     }
-    void ChangeStopMove() => stopMove = true;
+    void ChangeStopMove(bool value) => stopMove = value;
 
     private void OnDestroy()
     {

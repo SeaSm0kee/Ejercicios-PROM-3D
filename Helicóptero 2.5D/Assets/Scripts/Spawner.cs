@@ -39,6 +39,7 @@ public class Spawner : MonoBehaviour
         firstSkyscraper = true;
         gm.SkyscraperDestroyed += DestroySkyscraper;
         gm.StartSpawnAirplane += SpawnAirplane;
+        gm.AumentaDificultad += CambiarDificultad;
         firstAirplane = true;
     }
 
@@ -128,5 +129,16 @@ public class Spawner : MonoBehaviour
     {
         gm.SkyscraperDestroyed -= DestroySkyscraper;
         gm.StartSpawnAirplane -= SpawnAirplane;
+    }
+
+    void CambiarDificultad(int totalCoins)
+    {
+        if (totalCoins >= 250)
+            diferencia = 14;
+        else if (totalCoins >= 150)
+            diferencia = 17;
+        else if (totalCoins >= 50)
+            diferencia = 20;
+        SpawnSkyscraper();
     }
 }

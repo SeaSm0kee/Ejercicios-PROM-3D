@@ -75,10 +75,7 @@ public class MovementHelicopter : MonoBehaviour
         gm.HelicopterDead();
     }
 
-    void SetCanMove()
-    {
-        canMove = true;
-    }
+    void SetCanMove(bool value) => canMove = value;
 
     private void OnDestroy()
     {

@@ -6,15 +6,29 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    private enum eStates { Ready, Playing, GameOver}
+    private eStates state;
     public event Action<GameObject> SkyscraperDestroyed;
     public event Action StartSpawnAirplane;
     private int coins;
     [SerializeField] TextMeshProUGUI textCoins;
     [SerializeField] private GameObject uiDead;
-    public event Action StartPlay;
+    public event Action<bool> StartPlay;
     [SerializeField] private GameObject uiStartGame;
     [SerializeField] private GameObject uiCoins;
     private bool isPlaying;
+    private bool cambioAplicado;
+    public event Action<int> AumentaDificultad;
+    private bool win;
+    [SerializeField] private int nivelDificultadActual;
+
+    private void Awake()
+    {
+        state = eStates.Ready;
+        cambioAplicado = false;
+        isPlaying = false;
+        nivelDificultadActual = 0;
+    }
 
     void Start()
     {
@@ -25,7 +39,74 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        switch (state)
+        {
+            case eStates.Ready:
+                UpdateReady();
+                break;
+            case eStates.Playing:
+                UpdatePlaying();
+                break;
+            case eStates.GameOver:
+                break;
+        }
+    }
 
+    void UpdateReady()
+    {
+        if (isPlaying)
+        {
+            StartCoroutine(Coroutine());
+            uiStartGame.SetActive(false);
+            uiCoins.SetActive(true);
+            StartPlay?.Invoke(true);
+            state = eStates.Playing;
+        }
+
+        
+    }
+
+    void UpdatePlaying()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            coins += 50;
+            textCoins.text = coins.ToString();
+            Debug.Log("hi");
+        }
+
+        if (coins > 300 && nivelDificultadActual < 4)
+        {
+            win = true;
+            nivelDificultadActual = 4;
+            Debug.Log("win");
+        }
+        else if (coins >= 250 && nivelDificultadActual < 3)
+        {
+            cambioAplicado = false;
+            nivelDificultadActual = 3;
+            AumentarDificultad();
+        }
+        else if (coins >= 150 && nivelDificultadActual < 2)
+        {
+            cambioAplicado = false;
+            nivelDificultadActual = 2;
+            AumentarDificultad();
+        }
+        else if (coins >= 50 && nivelDificultadActual < 1)
+        {
+            nivelDificultadActual = 1;
+            AumentarDificultad();
+        }
+    }
+
+    void AumentarDificultad()
+    {
+        if (!cambioAplicado)
+        {
+            AumentaDificultad?.Invoke(coins);
+            cambioAplicado = true;
+        }
     }
 
     public void DestruirSkyscraper(GameObject go)
@@ -49,14 +130,18 @@ public class GameManager : MonoBehaviour
         coins += n;
         textCoins.text = coins.ToString();
     }
-    public void StarGame()
+    
+
+    
+
+    public void HelicopterDead()
     {
-        StartCoroutine(Coroutine());
-        uiStartGame.SetActive(false);
-        uiCoins.SetActive(true);
-        StartPlay?.Invoke();
-        isPlaying = true;
+        state = eStates.GameOver;
     }
+
+    public bool GetIsPlaying() => isPlaying;
+
+    public void StarGame() => isPlaying = true;
 
     public void ExitGame()
     {
@@ -65,11 +150,4 @@ public class GameManager : MonoBehaviour
 #endif
         Application.Quit();
     }
-
-    public void HelicopterDead()
-    {
-
-    }
-
-    public bool GetIsPlaying() => isPlaying;
 }

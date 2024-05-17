@@ -4961,5 +4961,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particle: {fileID: 0}
   timeToDestroy: 2
-  speed: 8
+  speed: 12
   endMap: -30
+  vfx: {fileID: 0}

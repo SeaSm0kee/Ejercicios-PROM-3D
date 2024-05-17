@@ -812,7 +812,7 @@ MonoBehaviour:
   maxY_Skyscraper: 9.5
   minY_Skyscraper: -1.5
   posicionInicio: 30
-  diferencia: 25
+  diferencia: 20
   skyscraperInList: 4
   coinPrefab: {fileID: 872115531362845477, guid: 38d26d6ed87867f27a2b868b2e629322,
     type: 3}
@@ -2554,7 +2554,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2083133065
 RectTransform:
   m_ObjectHideFlags: 0

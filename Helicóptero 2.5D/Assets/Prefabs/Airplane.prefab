@@ -153,6 +153,7 @@ MonoBehaviour:
   timeToDestroy: 0
   speed: 18
   endMap: -30
+  vfx: {fileID: 0}
 --- !u!1001 &5655170751213939573
 PrefabInstance:
   m_ObjectHideFlags: 0
