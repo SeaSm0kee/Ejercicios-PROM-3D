@@ -15,10 +15,6 @@ public class MoveAndDestroy : MonoBehaviour
     private bool stopMove;
     [SerializeField] private GameObject vfx;
     
-
-    //public delegate void DelegateMoveAndDestroy();
-    //public event DelegateMoveAndDestroy 
-
     private void Awake()
     {
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -46,14 +42,15 @@ public class MoveAndDestroy : MonoBehaviour
     void Update()
     {
         if (transform.position.x <= endMap)
-            DestruirObjeto();
-
+            DestroyGameObject();
     }
 
     private void FixedUpdate()
     {
         if(stopMove)
-            rb.velocity = new Vector2(speed*-1, rb.velocity.y);
+            rb.velocity = new Vector2(speed * -1, rb.velocity.y);
+        else
+            rb.velocity = new Vector2(speed * 0, rb.velocity.y);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -61,24 +58,14 @@ public class MoveAndDestroy : MonoBehaviour
         if (gameObject.CompareTag("Coin") || gameObject.CompareTag("Diamond"))
         {
             if (other.gameObject.CompareTag("Helicopter"))
-                PruebaCoin();
+                DestroyCoin();
         }
         else if (gameObject.CompareTag("Airplane"))
             if (other.gameObject.CompareTag("Helicopter"))
                 DestroyAirplane();
     }
 
-
-    IEnumerator CorDestroyCoin()
-    {
-        gm.SumarCoin(gameObject.CompareTag("Coin") ? 1 : 10);
-        meshRenderer.enabled = false;
-        particle.Play();
-        yield return new WaitForSeconds(timeToDestroy);
-        Destroy(gameObject);
-    }
-
-    void PruebaCoin() //Cambiar nombre
+    void DestroyCoin()
     {
         gm.SumarCoin(gameObject.CompareTag("Coin") ? 1 : 10);
         meshRenderer.enabled = false;
@@ -86,7 +73,7 @@ public class MoveAndDestroy : MonoBehaviour
         Destroy(gameObject, timeToDestroy);
     }
 
-    void DestruirObjeto()
+    void DestroyGameObject()
     {
         if (gameObject.CompareTag("Skyscrapers"))
             gm.DestruirSkyscraper(gameObject);
@@ -103,7 +90,6 @@ public class MoveAndDestroy : MonoBehaviour
         Destroy(gameObject, 3f);
     }
     void ChangeStopMove(bool value) => stopMove = value;
-
     private void OnDestroy()
     {
         gm.StartPlay -= ChangeStopMove;

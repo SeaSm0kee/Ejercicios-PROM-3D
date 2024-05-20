@@ -70,9 +70,9 @@ public class MovementHelicopter : MonoBehaviour
         blades.SetActive(false);
         body.SetActive(false);
         vfx.SetActive(true);
+        gm.HelicopterDead();
         yield return new WaitForSeconds(3);
         Destroy(gameObject);
-        gm.HelicopterDead();
     }
 
     void SetCanMove(bool value) => canMove = value;

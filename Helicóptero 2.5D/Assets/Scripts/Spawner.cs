@@ -30,6 +30,9 @@ public class Spawner : MonoBehaviour
     private GameObject airplane;
     private bool firstAirplane;
     private readonly float positionZ = 35f;
+    private bool stopSpawn;
+    private SceneTransition sceneTransitionDeath;
+    private SceneTransition sceneTransitionWin;
 
 
     private void Awake()
@@ -37,10 +40,17 @@ public class Spawner : MonoBehaviour
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         skyscrapersList = new List<GameObject>();
         firstSkyscraper = true;
+        firstAirplane = true;
+        stopSpawn = false;
+        sceneTransitionDeath = GameObject.Find("SceneTransitionDeath").GetComponent<SceneTransition>();
+        sceneTransitionWin = GameObject.Find("SceneTransitionWin").GetComponent<SceneTransition>();
+        sceneTransitionDeath.Finish += DestroyObjects;
+        sceneTransitionWin.Finish += DestroyObjects;
         gm.SkyscraperDestroyed += DestroySkyscraper;
         gm.StartSpawnAirplane += SpawnAirplane;
         gm.AumentaDificultad += CambiarDificultad;
-        firstAirplane = true;
+        gm.HelicopterDeath += ChangeStopSpawn;
+        gm.HelicopterWin += ChangeStopSpawn;
     }
 
     void Start()
@@ -73,10 +83,13 @@ public class Spawner : MonoBehaviour
 
     void SpawnSkyscraper()
     {
-        skyscraper = Instantiate(skyscrapersPrefabs[Random.Range(0, 3)]);
-        skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(), positionZ);
-        skyscrapersList.Add(skyscraper);
-        SpawnCoinOrDiamond();
+        if (!stopSpawn)
+        {
+            skyscraper = Instantiate(skyscrapersPrefabs[Random.Range(0, 3)]);
+            skyscraper.transform.position = new Vector3(skyscrapersList.Last().transform.position.x + diferencia, RandomHeight(), positionZ);
+            skyscrapersList.Add(skyscraper);
+            SpawnCoinOrDiamond();
+        }
     }
 
     void DestroySkyscraper(GameObject go)
@@ -89,26 +102,23 @@ public class Spawner : MonoBehaviour
     {
         Vector3 vectorSkyscraper = skyscraper.transform.position;
         if (Random.value < chanceDiamond)
-        {
             Instantiate(diamondPrefab).transform.position = new Vector3(vectorSkyscraper.x, vectorSkyscraper.y + 19, positionZ);
-            //coin = Instantiate(coinPrefab);
-            //coin.transform.position = new Vector3(skyscraper.transform.position.x, skyscraper.transform.position.y + 19, skyscraper.transform.position.z);
-        }else if(Random.value < chanceCoin)
+        else if(Random.value < chanceCoin)
             Instantiate(coinPrefab).transform.position = new Vector3(vectorSkyscraper.x, vectorSkyscraper.y + 19, positionZ);
-        
     }
 
     void SpawnAirplane()
     {
-        if (firstAirplane)
+        if (!stopSpawn)
         {
-            InstantiateAirplane();
-            firstAirplane = false;
+            if (firstAirplane)
+            {
+                InstantiateAirplane();
+                firstAirplane = false;
+            }
+            else
+                StartCoroutine(CorAirplane());
         }
-        else
-            StartCoroutine(CorAirplane());
-        
-            
     }
 
     IEnumerator CorAirplane()
@@ -129,6 +139,10 @@ public class Spawner : MonoBehaviour
     {
         gm.SkyscraperDestroyed -= DestroySkyscraper;
         gm.StartSpawnAirplane -= SpawnAirplane;
+        sceneTransitionDeath.Finish -= DestroyObjects;
+        gm.HelicopterDeath -= ChangeStopSpawn;
+        gm.HelicopterWin -= ChangeStopSpawn;
+        sceneTransitionWin.Finish -= DestroyObjects;
     }
 
     void CambiarDificultad(int totalCoins)
@@ -140,5 +154,14 @@ public class Spawner : MonoBehaviour
         else if (totalCoins >= 50)
             diferencia = 20;
         SpawnSkyscraper();
+    }
+    void ChangeStopSpawn() => stopSpawn = true;
+    void DestroyObjects()
+    {
+        for (int i = 0; i < skyscrapersList.Count; i++)
+        {
+            Destroy(skyscrapersList[i]);
+        }
+        skyscrapersList.Clear();
     }
 }

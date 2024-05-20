@@ -3,24 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     private enum eStates { Ready, Playing, GameOver}
     private eStates state;
+
     public event Action<GameObject> SkyscraperDestroyed;
     public event Action StartSpawnAirplane;
-    private int coins;
-    [SerializeField] TextMeshProUGUI textCoins;
-    [SerializeField] private GameObject uiDead;
     public event Action<bool> StartPlay;
+    public event Action<int> AumentaDificultad;
+    public event Action HelicopterDeath;
+    public event Action HelicopterWin;
+
+    private int coins;
+
+    [SerializeField] TextMeshProUGUI textCoins;
     [SerializeField] private GameObject uiStartGame;
     [SerializeField] private GameObject uiCoins;
+    
     private bool isPlaying;
     private bool cambioAplicado;
-    public event Action<int> AumentaDificultad;
+    
     private bool win;
-    [SerializeField] private int nivelDificultadActual;
+    private int nivelDificultadActual;
 
     private void Awake()
     {
@@ -32,7 +39,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        uiDead.SetActive(false);
         uiCoins.SetActive(false);
     }
 
@@ -72,14 +78,12 @@ public class GameManager : MonoBehaviour
         {
             coins += 50;
             textCoins.text = coins.ToString();
-            Debug.Log("hi");
         }
 
-        if (coins > 300 && nivelDificultadActual < 4)
+        if (coins >= 300 && nivelDificultadActual < 4)
         {
-            win = true;
             nivelDificultadActual = 4;
-            Debug.Log("win");
+            Win();
         }
         else if (coins >= 250 && nivelDificultadActual < 3)
         {
@@ -130,14 +134,30 @@ public class GameManager : MonoBehaviour
         coins += n;
         textCoins.text = coins.ToString();
     }
-    
-
-    
 
     public void HelicopterDead()
     {
-        state = eStates.GameOver;
+        if (!win)
+        {
+            isPlaying = false;
+            HelicopterDeath?.Invoke();
+            StartPlay?.Invoke(false);
+            uiCoins.SetActive(false);
+            state = eStates.GameOver;
+        }
     }
+
+    private void Win()
+    {
+        uiCoins.SetActive(false);
+        win = true;
+        HelicopterWin?.Invoke();
+        StartPlay?.Invoke(false);
+        state = eStates.GameOver;
+        Destroy(GameObject.FindWithTag("Helicopter"), 2f);
+    }
+
+    public void ReloadScene() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
     public bool GetIsPlaying() => isPlaying;
 
