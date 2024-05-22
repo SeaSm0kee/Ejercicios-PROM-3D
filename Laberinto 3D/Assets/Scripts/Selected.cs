@@ -24,13 +24,19 @@ public class Selected : MonoBehaviour
         {
             Deselect();
             SelectedObject(hit.transform);
-            if (hit.collider.CompareTag("Arrow"))
-            {
-                if (Input.GetKeyDown(KeyCode.E))
+            
+                if (hit.collider.CompareTag("Arrow"))
                 {
-                    Debug.Log("Arrow");
+                    if(Input.GetKeyDown(KeyCode.E))
+                        Debug.Log("Arrow");
                 }
-            }
+                else if(hit.collider.CompareTag("Roca"))
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                        Debug.Log("Roca");
+                }
+            
+            
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * distancia, Color.red);
         }
         else
