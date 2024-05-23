@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Dependencies.Sqlite;
@@ -12,6 +13,9 @@ public class Selected : MonoBehaviour
     [SerializeField] private GameObject textDetect;
     private GameObject ultimoReconocido;
     [SerializeField] private Texture2D puntero;
+    public event Action Arrow;
+    public event Action FlashLight;
+    public event Action ActivarPiedra;
     void Start()
     {
 
@@ -24,19 +28,32 @@ public class Selected : MonoBehaviour
         {
             Deselect();
             SelectedObject(hit.transform);
-            
-                if (hit.collider.CompareTag("Arrow"))
-                {
-                    if(Input.GetKeyDown(KeyCode.E))
-                        Debug.Log("Arrow");
-                }
-                else if(hit.collider.CompareTag("Roca"))
-                {
-                    if (Input.GetKeyDown(KeyCode.E))
-                        Debug.Log("Roca");
-                }
-            
-            
+
+            /*if (hit.collider.CompareTag("Arrow"))
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                    Debug.Log("Arrow");
+            }
+            else if (hit.collider.CompareTag("Roca"))
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                    Debug.Log("Roca");
+            }*/
+
+            /*switch (hit.collider.tag)
+            {
+                case "Arrow":
+                    break;
+                case "Roca":
+                    break;
+
+            }*/
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Interact();
+            }
+
+
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * distancia, Color.red);
         }
         else
@@ -44,17 +61,38 @@ public class Selected : MonoBehaviour
             Deselect();
         }
     }
+    void Interact()
+    {
+        switch (hit.collider.tag)
+        {
+            case "Arrow":
+                Arrow?.Invoke();
+                Destroy(hit.transform.gameObject);
+                break;
+            case "Roca":
+                break;
+            case "FlashLight":
+                FlashLight?.Invoke();
+                Destroy(hit.transform?.gameObject);
+                break;
+            case "Piedra":
+                ActivarPiedra?.Invoke();
+                break;
+
+
+        }
+    }
 
     void SelectedObject(Transform transform)
     {
-        //transform.GetComponent<MeshRenderer>().material.color = Color.green;
+        transform.GetComponent<MeshRenderer>().material.color = Color.green;
         ultimoReconocido = transform.gameObject;
     }
     void Deselect()
     {
         if (ultimoReconocido)
         {
-            //ultimoReconocido.GetComponent<MeshRenderer>().material.color = Color.white;
+            ultimoReconocido.GetComponent<MeshRenderer>().material.color = Color.white;
             ultimoReconocido = null;
         }
     }

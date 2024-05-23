@@ -9,6 +9,8 @@ TagManager:
   - Arrow
   - Interactable
   - Roca
+  - FlashLight
+  - Piedra
   layers:
   - Default
   - TransparentFX
