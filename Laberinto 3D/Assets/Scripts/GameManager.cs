@@ -5,9 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private bool arrowInventario;
-    //private UserDataManager userDataManager;
-    //private List<bool> piedrasActivadas;
+    private bool arrowInventario;
     private Selected selected;
     [SerializeField] private GameObject flashlightPlayer;
     [SerializeField] private Light lightPilar;
@@ -17,26 +15,26 @@ public class GameManager : MonoBehaviour
     private ParticleSystem fx_Door;
     [SerializeField] private GameObject textoAvisoDoor;
     [SerializeField] private GameObject canvasArrowInventario;
+    [SerializeField] private GameObject primeraPista;
+    [SerializeField] private GameObject segundaPista;
+    private UserDataManager userDataManager;
     private void Awake()
     {
         selected = GameObject.FindWithTag("MainCamera").GetComponent<Selected>();
-        //userDataManager = GetComponent<UserDataManager>();
-        //arrowInventario = userDataManager.arrowInventario;
+        userDataManager = GameObject.Find("UserDataManager").GetComponent<UserDataManager>();
         selected.Arrow += ArrowGuardada;
         selected.FlashLight += FlashLightUp;
         selected.ActivarDoor += TeleportDoor;
         piedrasActivadas = 0;
         particleSystemDoor = GameObject.FindWithTag("Door").GetComponent<ParticleSystem>();
         fx_Door = GameObject.Find("FX_Door").GetComponent<ParticleSystem>();
-        
+
     }
-    // Start is called before the first frame update
     void Start()
     {
-
+        StartCoroutine(CorActivarPanelAviso(primeraPista, 4.5f));
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (piedrasActivadas == 4)
@@ -47,7 +45,7 @@ public class GameManager : MonoBehaviour
                 particleSystemDoor.Play();
                 fx_Door.Play();
             }
-            
+
         }
         else
         {
@@ -62,11 +60,14 @@ public class GameManager : MonoBehaviour
 
     void ArrowGuardada()
     {
+        userDataManager.arrowInventario = true;
         arrowInventario = true;
         canvasArrowInventario.SetActive(true);
+        StartCoroutine(CorActivarPanelAviso(segundaPista, 10));
     }
     void FlashLightUp()
     {
+        userDataManager.flashLightInventario = true;
         flashlightPlayer.SetActive(true);
         lightPilar.enabled = false;
     }
@@ -75,7 +76,7 @@ public class GameManager : MonoBehaviour
         if (doorActivated && arrowInventario)
             SceneManager.LoadScene(1);
         else
-            StartCoroutine(CorActivarPanelAviso());
+            StartCoroutine(CorActivarPanelAviso(textoAvisoDoor, 5f));
     }
 
     public void SumarPiedra()
@@ -93,12 +94,10 @@ public class GameManager : MonoBehaviour
         selected.FlashLight -= FlashLightUp;
         selected.ActivarDoor -= TeleportDoor;
     }
-
-    //Esto avisa al jugador de que debe tener todas las piedras activadas y tener el arrow en el inventario para poder pasar
-    IEnumerator CorActivarPanelAviso()
+    IEnumerator CorActivarPanelAviso(GameObject ob, float time)
     {
-        textoAvisoDoor.SetActive(true);
-        yield return new WaitForSeconds(5);
-        textoAvisoDoor.SetActive(false);
+        ob.SetActive(true);
+        yield return new WaitForSeconds(time);
+        ob.SetActive(false);
     }
 }

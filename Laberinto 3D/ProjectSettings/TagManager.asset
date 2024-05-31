@@ -16,6 +16,8 @@ TagManager:
   - Piedra2
   - Piedra3
   - Piedra4
+  - Pentagram
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -26,7 +28,7 @@ TagManager:
   - Cubo
   - Arrow
   - Interactable
-  - 
+  - Player
   - 
   - 
   - 

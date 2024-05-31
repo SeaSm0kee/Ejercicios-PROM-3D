@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 public class TaskPatrol : BehaviorTree.Node
 {
-    EnemyBT ghostBT;
+    EnemyBT enemyBT;
     NavMeshAgent agent;
     private int cont;
     Transform target;
@@ -15,18 +15,18 @@ public class TaskPatrol : BehaviorTree.Node
 
     public TaskPatrol(BTree bTree) : base(bTree)
     {
-        ghostBT = bTree as EnemyBT;
-        agent = ghostBT.transform.GetComponent<NavMeshAgent>();
-        cont = 0;
+        enemyBT = bTree as EnemyBT;
+        agent = enemyBT.transform.GetComponent<NavMeshAgent>();
+        cont = Random.Range(0, enemyBT.points.Count);
         isWaiting = false;
     }
 
     public override NodeState Evaluate()
     {
-        target = ghostBT.points[cont];
+        target = enemyBT.points[cont];
         if (target != null) agent.destination = target.position;
 
-        if (Vector2.Distance(new Vector2(ghostBT.transform.position.x, ghostBT.transform.position.z), new Vector2(agent.destination.x, agent.destination.z)) <= 0.8f)
+        if (Vector2.Distance(new Vector2(enemyBT.transform.position.x, enemyBT.transform.position.z), new Vector2(agent.destination.x, agent.destination.z)) <= 0.8f)
             if (!isWaiting) bTree.StartCoroutine(CorWaitGhost());
 
         state = NodeState.RUNNING;
@@ -36,10 +36,15 @@ public class TaskPatrol : BehaviorTree.Node
     IEnumerator CorWaitGhost()
     {
         isWaiting = true;
-        yield return new WaitForSeconds(1);
-        cont++;
-        if (cont == 4) cont = 0;
+        enemyBT.velocidad = 0;
+        agent.speed = 0;
+        enemyBT.ReloadAnimation();
+        yield return new WaitForSeconds(2);
+        cont = Random.Range(0, enemyBT.points.Count);
         isWaiting = false;
+        enemyBT.velocidad = enemyBT.minSpeedAgent;
+        agent.speed = enemyBT.minSpeedAgent;
+        enemyBT.ReloadAnimation();
 
     }
 }

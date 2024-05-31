@@ -15,8 +15,9 @@ public class Selected : MonoBehaviour
     [SerializeField] private Texture2D puntero;
     public event Action Arrow;
     public event Action FlashLight;
-    public event Action ActivarPiedra;
+    //public event Action ActivarPiedra;
     public event Action ActivarDoor;
+    public event Action ActivarPentagram;
     void Start()
     {
 
@@ -70,14 +71,32 @@ public class Selected : MonoBehaviour
                 Arrow?.Invoke();
                 Destroy(hit.transform.gameObject);
                 break;
-            case "Roca":
+            /*case "Roca":
                 ActivarPiedra?.Invoke();
-                break;
+                break;*/
             case "FlashLight":
                 FlashLight?.Invoke();
                 Destroy(hit.transform?.gameObject);
                 break;
-            case "Piedra1":
+            /*case "Piedra1":
+                hit.collider.gameObject.GetComponent<Piedra>().InteractuaPiedra();
+                break;
+            case "Piedra2":
+                hit.collider.gameObject.GetComponent<Piedra>().InteractuaPiedra();
+                break;
+            case "Piedra3":
+                hit.collider.gameObject.GetComponent<Piedra>().InteractuaPiedra();
+                break;
+            case "Piedra4":
+                hit.collider.gameObject.GetComponent<Piedra>().InteractuaPiedra();
+                break;*/
+            case "Piedra":
+                hit.collider.gameObject.GetComponent<Piedra>().InteractuaPiedra();
+                break;
+            case "Pentagram":
+                ActivarPentagram?.Invoke();
+                break;
+            /*case "Piedra1":
                 ActivarPiedra?.Invoke();
                 break;
             case "Piedra2":
@@ -88,7 +107,7 @@ public class Selected : MonoBehaviour
                 break;
             case "Piedra4":
                 ActivarPiedra?.Invoke();
-                break;
+                break;*/
             case "Door":
                 ActivarDoor?.Invoke();
                 break;
@@ -104,7 +123,10 @@ public class Selected : MonoBehaviour
     {
         if (ultimoReconocido)
         {
-            ultimoReconocido.GetComponent<MeshRenderer>().material.color = Color.white;
+            if (!ultimoReconocido.gameObject.CompareTag("Door"))
+                ultimoReconocido.GetComponent<MeshRenderer>().material.color = Color.white;
+            else
+                ultimoReconocido.GetComponent<MeshRenderer>().material.color = Color.black;
             ultimoReconocido = null;
         }
     }

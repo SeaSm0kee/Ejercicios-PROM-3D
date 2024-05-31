@@ -8,6 +8,10 @@ public class EnemyBT : BTree
     public List<Transform> points;
     public LayerMask layerMask;
     public float radius;
+    public Animator animator;
+    public float velocidad = 0.0f;
+    public float maxSpeedAgent = 6f;
+    public float minSpeedAgent = 1f;
 
     protected override Node SetupTree()
     {
@@ -18,6 +22,12 @@ public class EnemyBT : BTree
             }),
             new TaskPatrol(this)
         });
+        velocidad = 2f;
+        ReloadAnimation();
         return root;
+    }
+    public void ReloadAnimation()
+    {
+        animator.SetFloat("MotionSpeed", velocidad);
     }
 }

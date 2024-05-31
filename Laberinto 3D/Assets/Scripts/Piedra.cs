@@ -7,14 +7,14 @@ public class Piedra : MonoBehaviour
     private GameManager gm;
     private Selected selected;
     private bool activada;
-    private ParticleSystem particleSystem;
+    private ParticleSystem vfx_Piedras;
     private void Awake()
     {
         activada = false;
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         selected = GameObject.FindWithTag("MainCamera").GetComponent<Selected>();
-        selected.ActivarPiedra += InteractuaPiedra;
-        particleSystem = GetComponent<ParticleSystem>();
+        //selected.ActivarPiedra += InteractuaPiedra;
+        vfx_Piedras = GetComponent<ParticleSystem>();
     }
     void Start()
     {
@@ -27,9 +27,9 @@ public class Piedra : MonoBehaviour
 
     }
 
-    void InteractuaPiedra()
+    public void InteractuaPiedra()
     {
-        switch (gameObject.tag)
+        /*switch (gameObject.tag)
         {
             case "Piedra1":
                 ActivarDesactivar();
@@ -43,9 +43,21 @@ public class Piedra : MonoBehaviour
             case "Piedra4":
                 ActivarDesactivar();
                 break;
+        }*/
+        //ActivarDesactivar();
+        if (!activada)
+        {
+            gm.SumarPiedra();
+            activada = true;
+            vfx_Piedras.Play();
         }
-        
-            
+        else
+        {
+            gm.RestarPiedra();
+            activada = false;
+            vfx_Piedras.Stop();
+        }
+
     }
 
     void ActivarDesactivar()
@@ -54,18 +66,18 @@ public class Piedra : MonoBehaviour
         {
             gm.SumarPiedra();
             activada = true;
-            particleSystem.Play();
+            vfx_Piedras.Play();
         }
         else
         {
             gm.RestarPiedra();
             activada = false;
-            particleSystem.Stop();
+            vfx_Piedras.Stop();
         }
     }
 
     private void OnDestroy()
     {
-        selected.ActivarPiedra -= InteractuaPiedra;
+        //selected.ActivarPiedra -= InteractuaPiedra;
     }
 }

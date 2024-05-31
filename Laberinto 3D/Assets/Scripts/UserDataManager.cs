@@ -5,8 +5,5 @@ using UnityEngine;
 public class UserDataManager : Singleton<UserDataManager>
 {
     public bool arrowInventario { get; set; }
-    private void Start()
-    {
-        arrowInventario = false;
-    }
+    public bool flashLightInventario { get; set; }
 }
