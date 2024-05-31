@@ -11,6 +11,11 @@ TagManager:
   - Roca
   - FlashLight
   - Piedra
+  - Door
+  - Piedra1
+  - Piedra2
+  - Piedra3
+  - Piedra4
   layers:
   - Default
   - TransparentFX

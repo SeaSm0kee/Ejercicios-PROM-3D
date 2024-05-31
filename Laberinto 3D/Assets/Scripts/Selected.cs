@@ -16,6 +16,7 @@ public class Selected : MonoBehaviour
     public event Action Arrow;
     public event Action FlashLight;
     public event Action ActivarPiedra;
+    public event Action ActivarDoor;
     void Start()
     {
 
@@ -70,22 +71,33 @@ public class Selected : MonoBehaviour
                 Destroy(hit.transform.gameObject);
                 break;
             case "Roca":
+                ActivarPiedra?.Invoke();
                 break;
             case "FlashLight":
                 FlashLight?.Invoke();
                 Destroy(hit.transform?.gameObject);
                 break;
-            case "Piedra":
+            case "Piedra1":
                 ActivarPiedra?.Invoke();
                 break;
-
-
+            case "Piedra2":
+                ActivarPiedra?.Invoke();
+                break;
+            case "Piedra3":
+                ActivarPiedra?.Invoke();
+                break;
+            case "Piedra4":
+                ActivarPiedra?.Invoke();
+                break;
+            case "Door":
+                ActivarDoor?.Invoke();
+                break;
         }
     }
 
     void SelectedObject(Transform transform)
     {
-        transform.GetComponent<MeshRenderer>().material.color = Color.green;
+        transform.GetComponent<MeshRenderer>().material.color = Color.yellow;
         ultimoReconocido = transform.gameObject;
     }
     void Deselect()
